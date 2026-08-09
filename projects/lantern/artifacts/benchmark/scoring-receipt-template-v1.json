@@ -1,0 +1,1 @@
+{"fixture_id":"LANTERN-FIXTURE-V1","required_fields":["frozen_artifact_set_sha256","contract_sha256","measurements_sha256","hard_gate_results","lantern","control","gates","result"],"schema":"LANTERN_BENCHMARK_SCORING_RECEIPT_TEMPLATE_V1"}
