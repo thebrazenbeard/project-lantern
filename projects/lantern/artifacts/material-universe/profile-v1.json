@@ -1,0 +1,1 @@
+{"canonicalizer":"src/lantern/canonical.py","material_schema_version":"LANTERN_MATERIAL_V1","project_scope":"PROJECT_LANTERN","schema":"LANTERN_MATERIAL_PROFILE_V1","semantic_fields":["semantic_role","subject_key"],"semantic_projector":"semantic_fields_exact_v1","target_postgres_project":"DEPLOYMENT_BINDING_UNBOUND","witness_mode":"GIT_CROSSBOUND_V1"}
