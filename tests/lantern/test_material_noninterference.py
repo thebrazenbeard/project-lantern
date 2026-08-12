@@ -1,10 +1,11 @@
 from lantern.material_runtime import *
 from lantern.material_universe import visible_set_digest
-def test_observation_b0_b1_same():
- dg,n=visible_set_digest([]); c=Cut("p",dg,n); calls=[]
- def cut(): calls.append(c); return c
- assert evaluate_recovery(project_scope="p",read_cut=cut,read_materials=lambda:[],read_witness=lambda:None)=="LINEAGE_LOCAL"
- assert calls==[c,c]
-def test_observation_movement_unknown():
- dg,n=visible_set_digest([]); cuts=iter([Cut("a",dg,n),Cut("b",dg,n)])
- assert evaluate_recovery(project_scope="p",read_cut=lambda:next(cuts),read_materials=lambda:[],read_witness=lambda:None)=="UNKNOWN"
+def cut():
+ m=(); dg,n=visible_set_digest(m); return Cut('LANTERN_MATERIAL_CUT_V1','p',None,'pol',m,dg,n)
+def test_observation_e0_e1_same():
+ c=cut(); calls=[]
+ def rd(): calls.append('r'); return 'same'
+ assert evaluate_recovery(project_scope='p',read_cut=lambda:c,read_witness=lambda:None,read_resource_digest=rd)=='LINEAGE_LOCAL'; assert len(calls)==2
+def test_observer_attributed_resource_movement_unknown():
+ c=cut(); values=iter(['before','after'])
+ assert evaluate_recovery(project_scope='p',read_cut=lambda:c,read_witness=lambda:None,read_resource_digest=lambda:next(values))=='UNKNOWN'
