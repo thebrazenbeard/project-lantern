@@ -78,8 +78,8 @@ BEGIN
    AND valid_from<=clock_timestamp() AND valid_until>clock_timestamp() FOR SHARE;
  IF sp.semantic_fields<>ARRAY['semantic_role','subject_key']::text[] OR NOT(payload_jsonb?'semantic_role' AND payload_jsonb?'subject_key') THEN
    RAISE EXCEPTION 'unknown or incomplete semantic projector'; END IF;
- sk:=encode(digest(convert_to(jsonb_build_array(payload_jsonb->'semantic_role',payload_jsonb->'subject_key')::text,'UTF8'),'sha256'),'hex');
- cd:=encode(digest(convert_to(payload_jsonb::text,'UTF8'),'sha256'),'hex');
+ sk:=pg_catalog.encode(pg_catalog.sha256(convert_to(jsonb_build_array(payload_jsonb->'semantic_role',payload_jsonb->'subject_key')::text,'UTF8')),'hex');
+ cd:=pg_catalog.encode(pg_catalog.sha256(convert_to(payload_jsonb::text,'UTF8')),'hex');
  INSERT INTO lantern_material.material VALUES(p_material_id,p_project_scope,p_schema_version,sk,cd,p_source_digest,payload_jsonb,clock_timestamp());
  rid:=gen_random_uuid();
  INSERT INTO lantern_material.admission_receipt(receipt_id,material_id,project_scope,producer_principal,grant_id,profile_digest,policy_digest,schema_version,semantic_key,canonical_digest,source_digest)
