@@ -59,22 +59,101 @@ CREATE OR REPLACE FUNCTION lantern_material.append_material_v1(
  p_material_id uuid,p_project_scope text,p_producer_principal text,p_schema_version text,
  p_source_digest text,p_payload_text text
 ) RETURNS uuid LANGUAGE plpgsql SECURITY DEFINER SET search_path=pg_catalog,lantern_material AS $$
-DECLARE g lantern_material.producer_grant%ROWTYPE; sp lantern_material.schema_policy%ROWTYPE;
- prof lantern_material.accepted_profile%ROWTYPE; payload_json json; payload_jsonb jsonb; rid uuid; sk text; cd text; leaf_count int;
+DECLARE
+ g lantern_material.producer_grant%ROWTYPE; sp lantern_material.schema_policy%ROWTYPE;
+ payload_json json; payload_jsonb jsonb; rid uuid; sk text; cd text;
+ pre_profile_digest text; pre_predecessor_digest text; pre_policy_digest text; pre_lineage jsonb;
+ locked_profile_digest text; locked_predecessor_digest text; locked_policy_digest text; locked_lineage jsonb;
 BEGIN
+ IF lower(current_setting('transaction_isolation')) <> 'read committed' THEN
+   RAISE EXCEPTION 'append_material_v1 requires READ COMMITTED transaction isolation';
+ END IF;
  payload_json:=p_payload_text::json; PERFORM lantern_material.assert_no_duplicate_json_keys_v1(payload_json); payload_jsonb:=payload_json::jsonb;
  SELECT * INTO STRICT sp FROM lantern_material.schema_policy WHERE schema_version=p_schema_version;
- SELECT count(*) INTO leaf_count FROM lantern_material.accepted_profile p
- WHERE p.project_scope=p_project_scope AND p.accepted AND NOT EXISTS(
-   SELECT 1 FROM lantern_material.accepted_profile c WHERE c.project_scope=p.project_scope AND c.accepted AND c.predecessor_digest=p.profile_digest);
- IF leaf_count<>1 THEN RAISE EXCEPTION 'current accepted profile is not unique'; END IF;
- SELECT * INTO STRICT prof FROM lantern_material.accepted_profile p
- WHERE p.project_scope=p_project_scope AND p.accepted AND NOT EXISTS(
-   SELECT 1 FROM lantern_material.accepted_profile c WHERE c.project_scope=p.project_scope AND c.accepted AND c.predecessor_digest=p.profile_digest)
- FOR SHARE;
+
+ WITH RECURSIVE scoped AS MATERIALIZED (
+   SELECT p.project_scope,p.profile_digest,p.predecessor_digest,p.policy_digest
+   FROM lantern_material.accepted_profile p WHERE p.project_scope=p_project_scope AND p.accepted
+ ), stats AS (
+   SELECT count(*)::int AS total,
+     count(*) FILTER (WHERE predecessor_digest IS NULL)::int AS genesis_count,
+     count(*) FILTER (WHERE predecessor_digest IS NOT NULL AND predecessor_digest=profile_digest)::int AS self_count,
+     count(*) FILTER (WHERE predecessor_digest IS NOT NULL AND NOT EXISTS(
+       SELECT 1 FROM scoped parent WHERE parent.profile_digest=scoped.predecessor_digest))::int AS orphan_count
+   FROM scoped
+ ), forks AS (
+   SELECT predecessor_digest FROM scoped WHERE predecessor_digest IS NOT NULL
+   GROUP BY predecessor_digest HAVING count(*)>1
+ ), genesis AS (
+   SELECT * FROM scoped WHERE predecessor_digest IS NULL
+ ), walk AS (
+   SELECT g.project_scope,g.profile_digest,g.predecessor_digest,g.policy_digest,ARRAY[g.profile_digest]::text[] AS path
+   FROM genesis g
+   UNION ALL
+   SELECT c.project_scope,c.profile_digest,c.predecessor_digest,c.policy_digest,w.path||c.profile_digest
+   FROM walk w JOIN scoped c ON c.predecessor_digest=w.profile_digest
+   WHERE NOT c.profile_digest=ANY(w.path)
+ ), leaves AS (
+   SELECT s.* FROM scoped s WHERE NOT EXISTS(SELECT 1 FROM scoped c WHERE c.predecessor_digest=s.profile_digest)
+ ), valid AS (
+   SELECT l.*,(SELECT jsonb_agg(jsonb_build_array(s.profile_digest,s.predecessor_digest,s.policy_digest) ORDER BY s.profile_digest) FROM scoped s) AS lineage
+   FROM leaves l CROSS JOIN stats st
+   WHERE st.total>0 AND st.genesis_count=1 AND st.self_count=0 AND st.orphan_count=0
+     AND NOT EXISTS(SELECT 1 FROM forks)
+     AND (SELECT count(*) FROM walk)=st.total
+     AND (SELECT count(*) FROM leaves)=1
+ )
+ SELECT v.profile_digest,v.predecessor_digest,v.policy_digest,v.lineage
+ INTO pre_profile_digest,pre_predecessor_digest,pre_policy_digest,pre_lineage FROM valid v;
+ IF pre_profile_digest IS NULL THEN RAISE EXCEPTION 'accepted profile lineage is invalid'; END IF;
+
+ LOCK TABLE lantern_material.accepted_profile IN SHARE MODE;
+
+ WITH RECURSIVE scoped AS MATERIALIZED (
+   SELECT p.project_scope,p.profile_digest,p.predecessor_digest,p.policy_digest
+   FROM lantern_material.accepted_profile p WHERE p.project_scope=p_project_scope AND p.accepted
+ ), stats AS (
+   SELECT count(*)::int AS total,
+     count(*) FILTER (WHERE predecessor_digest IS NULL)::int AS genesis_count,
+     count(*) FILTER (WHERE predecessor_digest IS NOT NULL AND predecessor_digest=profile_digest)::int AS self_count,
+     count(*) FILTER (WHERE predecessor_digest IS NOT NULL AND NOT EXISTS(
+       SELECT 1 FROM scoped parent WHERE parent.profile_digest=scoped.predecessor_digest))::int AS orphan_count
+   FROM scoped
+ ), forks AS (
+   SELECT predecessor_digest FROM scoped WHERE predecessor_digest IS NOT NULL
+   GROUP BY predecessor_digest HAVING count(*)>1
+ ), genesis AS (
+   SELECT * FROM scoped WHERE predecessor_digest IS NULL
+ ), walk AS (
+   SELECT g.project_scope,g.profile_digest,g.predecessor_digest,g.policy_digest,ARRAY[g.profile_digest]::text[] AS path
+   FROM genesis g
+   UNION ALL
+   SELECT c.project_scope,c.profile_digest,c.predecessor_digest,c.policy_digest,w.path||c.profile_digest
+   FROM walk w JOIN scoped c ON c.predecessor_digest=w.profile_digest
+   WHERE NOT c.profile_digest=ANY(w.path)
+ ), leaves AS (
+   SELECT s.* FROM scoped s WHERE NOT EXISTS(SELECT 1 FROM scoped c WHERE c.predecessor_digest=s.profile_digest)
+ ), valid AS (
+   SELECT l.*,(SELECT jsonb_agg(jsonb_build_array(s.profile_digest,s.predecessor_digest,s.policy_digest) ORDER BY s.profile_digest) FROM scoped s) AS lineage
+   FROM leaves l CROSS JOIN stats st
+   WHERE st.total>0 AND st.genesis_count=1 AND st.self_count=0 AND st.orphan_count=0
+     AND NOT EXISTS(SELECT 1 FROM forks)
+     AND (SELECT count(*) FROM walk)=st.total
+     AND (SELECT count(*) FROM leaves)=1
+ )
+ SELECT v.profile_digest,v.predecessor_digest,v.policy_digest,v.lineage
+ INTO locked_profile_digest,locked_predecessor_digest,locked_policy_digest,locked_lineage FROM valid v;
+ IF locked_profile_digest IS NULL THEN RAISE EXCEPTION 'accepted profile lineage is invalid after serialization'; END IF;
+ IF locked_profile_digest IS DISTINCT FROM pre_profile_digest
+    OR locked_predecessor_digest IS DISTINCT FROM pre_predecessor_digest
+    OR locked_policy_digest IS DISTINCT FROM pre_policy_digest
+    OR locked_lineage IS DISTINCT FROM pre_lineage THEN
+   RAISE EXCEPTION 'accepted profile lineage changed during admission';
+ END IF;
+
  SELECT * INTO STRICT g FROM lantern_material.producer_grant
  WHERE project_scope=p_project_scope AND producer_principal=p_producer_principal AND schema_version=p_schema_version
-   AND profile_digest=prof.profile_digest AND policy_digest=prof.policy_digest AND revoked_at IS NULL
+   AND profile_digest=locked_profile_digest AND policy_digest=locked_policy_digest AND revoked_at IS NULL
    AND valid_from<=clock_timestamp() AND valid_until>clock_timestamp() FOR SHARE;
  IF sp.semantic_fields<>ARRAY['semantic_role','subject_key']::text[] OR NOT(payload_jsonb?'semantic_role' AND payload_jsonb?'subject_key') THEN
    RAISE EXCEPTION 'unknown or incomplete semantic projector'; END IF;
@@ -83,7 +162,7 @@ BEGIN
  INSERT INTO lantern_material.material VALUES(p_material_id,p_project_scope,p_schema_version,sk,cd,p_source_digest,payload_jsonb,clock_timestamp());
  rid:=gen_random_uuid();
  INSERT INTO lantern_material.admission_receipt(receipt_id,material_id,project_scope,producer_principal,grant_id,profile_digest,policy_digest,schema_version,semantic_key,canonical_digest,source_digest)
- VALUES(rid,p_material_id,p_project_scope,p_producer_principal,g.grant_id,prof.profile_digest,prof.policy_digest,p_schema_version,sk,cd,p_source_digest);
+ VALUES(rid,p_material_id,p_project_scope,p_producer_principal,g.grant_id,locked_profile_digest,locked_policy_digest,p_schema_version,sk,cd,p_source_digest);
  RETURN rid;
 END $$;
 REVOKE ALL ON FUNCTION lantern_material.append_material_v1(uuid,text,text,text,text,text) FROM PUBLIC;
