@@ -87,8 +87,8 @@ BEGIN
  ), genesis AS (
    SELECT * FROM scoped WHERE predecessor_digest IS NULL
  ), walk AS (
-   SELECT g.project_scope,g.profile_digest,g.predecessor_digest,g.policy_digest,ARRAY[g.profile_digest]::text[] AS path
-   FROM genesis g
+   SELECT gen.project_scope,gen.profile_digest,gen.predecessor_digest,gen.policy_digest,ARRAY[gen.profile_digest]::text[] AS path
+   FROM genesis gen
    UNION ALL
    SELECT c.project_scope,c.profile_digest,c.predecessor_digest,c.policy_digest,w.path||c.profile_digest
    FROM walk w JOIN scoped c ON c.predecessor_digest=w.profile_digest
@@ -125,8 +125,8 @@ BEGIN
  ), genesis AS (
    SELECT * FROM scoped WHERE predecessor_digest IS NULL
  ), walk AS (
-   SELECT g.project_scope,g.profile_digest,g.predecessor_digest,g.policy_digest,ARRAY[g.profile_digest]::text[] AS path
-   FROM genesis g
+   SELECT gen.project_scope,gen.profile_digest,gen.predecessor_digest,gen.policy_digest,ARRAY[gen.profile_digest]::text[] AS path
+   FROM genesis gen
    UNION ALL
    SELECT c.project_scope,c.profile_digest,c.predecessor_digest,c.policy_digest,w.path||c.profile_digest
    FROM walk w JOIN scoped c ON c.predecessor_digest=w.profile_digest
