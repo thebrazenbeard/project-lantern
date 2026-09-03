@@ -1,0 +1,19 @@
+{
+  "acceptance": {
+    "failure_path_verified": false,
+    "package_verified": false,
+    "project_files_installed": false,
+    "runtime_consumption_verified": false
+  },
+  "installed_at": null,
+  "installed_project_files": [],
+  "limitations": [],
+  "package_sha256": null,
+  "project_instructions_addendum_sha256": null,
+  "result": "NOT_ESTABLISHED",
+  "schema": "PROJECT_LANTERN_CHATGPT_INSTALL_RECEIPT_V1",
+  "source_commit": "d0e05365883d8f670030fb1a1ff5fcd847937a77",
+  "source_tree": "3b155a88967f2f7a0f4ad6fa7b32ce3cbac73da0",
+  "supabase_project_id": "agvhmutlrolbaijzlbqk",
+  "target_project": "Vera Unbound"
+}

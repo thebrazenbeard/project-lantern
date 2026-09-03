@@ -1,0 +1,29 @@
+{
+  "install_state_on_build": "PACKAGE_BUILT_NOT_INSTALLED",
+  "package_id": "PROJECT_LANTERN_CHATGPT_INSTALL_V1",
+  "payload_files": [
+    {"path":"INSTALL.md","sha256":"7b88e9b9f1f54adbe548a3085a8aa0953d9234ffe79e2aa8db10be4ee061a5f3","size":963},
+    {"path":"INSTALL_RECEIPT_TEMPLATE.json","sha256":"0074d079d6b3faeed5608260523f847fc3c69d9e6d572adf253cd63b21a7ce91","size":623},
+    {"path":"PROJECT_FILES/LANTERN_ACCEPTANCE_V1.md","sha256":"533d1b0647e8692195e5eaf917fd75b4076f855c9e55e3f018d50d138508b2c4","size":2023},
+    {"path":"PROJECT_FILES/LANTERN_OPERATOR_HANDSHAKE_V1.md","sha256":"b2f6b21e95e662201f88658d7ee3d8c6236d774b3670efe58591dedc5854f311","size":1731},
+    {"path":"PROJECT_FILES/LANTERN_READ_QUERIES_V1.md","sha256":"bb9b04193f03079c1f60780b52511d10d1f4b82c30b8b29ead29515e37b1395e","size":3926},
+    {"path":"PROJECT_FILES/LANTERN_RUNTIME_CONTRACT_V1.md","sha256":"fbe04e4a27a9b96083442e29c80123b76b17bbe875a0fde709cef3f43d7c820c","size":1843},
+    {"path":"PROJECT_INSTRUCTIONS_ADDENDUM.md","sha256":"baf08a5c60aa74db03cb9b00c06ce824e0a9eb32a84ecfe643541fc73022fbc1","size":2010},
+    {"path":"README.md","sha256":"d069f309d99daf96f462dbbcffb720088d8ef7cc8b8cee51991dfd5e75621798","size":1032},
+    {"path":"ROLLBACK.md","sha256":"0951ebdf017b235244e15e28bfb215440c7e0f0124549d4fa267c0e7ba12397d","size":605},
+    {"path":"SOURCE_BINDING.json","sha256":"c1d4762c86d46d1f34ee2dea7f0057816fb193d102cdc82f1c9993b5fb24406d","size":1776}
+  ],
+  "project_files": [
+    "PROJECT_FILES/LANTERN_RUNTIME_CONTRACT_V1.md",
+    "PROJECT_FILES/LANTERN_OPERATOR_HANDSHAKE_V1.md",
+    "PROJECT_FILES/LANTERN_READ_QUERIES_V1.md",
+    "PROJECT_FILES/LANTERN_ACCEPTANCE_V1.md"
+  ],
+  "project_instruction_payload": "PROJECT_INSTRUCTIONS_ADDENDUM.md",
+  "provider_project_id": "agvhmutlrolbaijzlbqk",
+  "schema": "PROJECT_LANTERN_CHATGPT_INSTALL_MANIFEST_V1",
+  "source_commit": "d0e05365883d8f670030fb1a1ff5fcd847937a77",
+  "source_tree": "3b155a88967f2f7a0f4ad6fa7b32ce3cbac73da0",
+  "target_project": "Vera Unbound",
+  "version": "1.0.0"
+}

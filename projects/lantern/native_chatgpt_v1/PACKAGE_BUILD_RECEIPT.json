@@ -1,0 +1,14 @@
+{
+  "schema": "PROJECT_LANTERN_CHATGPT_PACKAGE_BUILD_RECEIPT_V1",
+  "package_id": "PROJECT_LANTERN_CHATGPT_INSTALL_V1",
+  "zip_sha256": "31cfa335592ef7ee7587fb1f30370eda2aa30a828a269c03631004c1db702a71",
+  "zip_size": 12324,
+  "source_commit": "d0e05365883d8f670030fb1a1ff5fcd847937a77",
+  "source_tree": "3b155a88967f2f7a0f4ad6fa7b32ce3cbac73da0",
+  "provider_project_id": "agvhmutlrolbaijzlbqk",
+  "package_validation": "PASS",
+  "zip_extract_byte_equivalence": "PASS",
+  "install_state": "PACKAGE_BUILT_NOT_INSTALLED",
+  "runtime_consumption_state": "NOT_ESTABLISHED",
+  "provider_effect": "NONE"
+}

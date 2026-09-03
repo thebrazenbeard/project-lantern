@@ -1,0 +1,40 @@
+{
+  "limitations": [
+    "True multi-session PostgreSQL timing evidence for C-01/C-02a/C-02b remains not established by the stateless Supabase SQL route.",
+    "This source binding is package provenance; mutable Git/provider state must be freshly read before current claims.",
+    "Package build does not establish Project installation or runtime consumption."
+  ],
+  "package_target": "Vera Unbound",
+  "provider": {
+    "kind": "Supabase/PostgreSQL",
+    "observed_at": "2026-09-02T19:21:00-04:00",
+    "observed_counts": {
+      "accepted_profiles": 1,
+      "admission_receipts": 2,
+      "materials": 2,
+      "producer_grants": 3,
+      "runtime_visible": 2,
+      "schema_policies": 1
+    },
+    "observed_migrations": [
+      ["20260829151716", "lantern_material_universe_v1"],
+      ["20260901180239", "lantern_harden_accepted_profile_currentness_v1"],
+      ["20260901180815", "lantern_fix_plpgsql_alias_collision_v1"]
+    ],
+    "project_id": "agvhmutlrolbaijzlbqk",
+    "project_scope": "PROJECT_LANTERN"
+  },
+  "schema": "PROJECT_LANTERN_NATIVE_SOURCE_BINDING_V1",
+  "source": {
+    "branch_at_build": "feature/lantern-material-universe-v1",
+    "commit": "d0e05365883d8f670030fb1a1ff5fcd847937a77",
+    "key_blobs": {
+      "projects/lantern/sql/bootstrap_material_cut_v1.sql": "f1fe273172d284d84ab7f10922d5a974a79fe2f2",
+      "src/lantern/contracts.py": "e94b1ede57bad11609608558e28a7e77627fdbce",
+      "src/lantern/material_runtime.py": "5e7e2654e9785678a11a1001b9ba1756aa3b0897",
+      "src/lantern/material_universe.py": "88970d2a0d0be756e7435ea37f7d0a2148c13dc9"
+    },
+    "repository": "thebrazenbeard/project-lantern",
+    "tree": "3b155a88967f2f7a0f4ad6fa7b32ce3cbac73da0"
+  }
+}
