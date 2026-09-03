@@ -17,9 +17,18 @@
       "schema_policies": 1
     },
     "observed_migrations": [
-      ["20260829151716", "lantern_material_universe_v1"],
-      ["20260901180239", "lantern_harden_accepted_profile_currentness_v1"],
-      ["20260901180815", "lantern_fix_plpgsql_alias_collision_v1"]
+      [
+        "20260829151716",
+        "lantern_material_universe_v1"
+      ],
+      [
+        "20260901180239",
+        "lantern_harden_accepted_profile_currentness_v1"
+      ],
+      [
+        "20260901180815",
+        "lantern_fix_plpgsql_alias_collision_v1"
+      ]
     ],
     "project_id": "agvhmutlrolbaijzlbqk",
     "project_scope": "PROJECT_LANTERN"
