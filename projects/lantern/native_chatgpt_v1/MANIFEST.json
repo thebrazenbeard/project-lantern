@@ -4,8 +4,8 @@
   "payload_files": [
     {
       "path": "INSTALL.md",
-      "sha256": "7b88e9b9f1f54adbe548a3085a8aa0953d9234ffe79e2aa8db10be4ee061a5f3",
-      "size": 963
+      "sha256": "30faff5b2590b5dfff7e5fb7334979f72d7b17f1b7c041347c09294a79aaaf2e",
+      "size": 1440
     },
     {
       "path": "INSTALL_RECEIPT_TEMPLATE.json",
@@ -49,8 +49,8 @@
     },
     {
       "path": "SOURCE_BINDING.json",
-      "sha256": "c1d4762c86d46d1f34ee2dea7f0057816fb193d102cdc82f1c9993b5fb24406d",
-      "size": 1776
+      "sha256": "ae9a1c6274bea016cf18f7044a7b05d900779f1bd684635b5b9d7c66e35743bb",
+      "size": 1789
     }
   ],
   "project_files": [
@@ -65,5 +65,5 @@
   "source_commit": "d0e05365883d8f670030fb1a1ff5fcd847937a77",
   "source_tree": "3b155a88967f2f7a0f4ad6fa7b32ce3cbac73da0",
   "target_project": "Vera Unbound",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

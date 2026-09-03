@@ -7,7 +7,7 @@
   "package_target": "Vera Unbound",
   "provider": {
     "kind": "Supabase/PostgreSQL",
-    "observed_at": "2026-09-02T19:21:00-04:00",
+    "observed_at": null,
     "observed_counts": {
       "accepted_profiles": 1,
       "admission_receipts": 2,
@@ -31,7 +31,8 @@
       ]
     ],
     "project_id": "agvhmutlrolbaijzlbqk",
-    "project_scope": "PROJECT_LANTERN"
+    "project_scope": "PROJECT_LANTERN",
+    "observed_at_state": "UNKNOWN"
   },
   "schema": "PROJECT_LANTERN_NATIVE_SOURCE_BINDING_V1",
   "source": {
