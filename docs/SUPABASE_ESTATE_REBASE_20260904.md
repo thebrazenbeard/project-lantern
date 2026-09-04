@@ -44,9 +44,17 @@ Observed Lantern `bug_ops` is empty:
 - system config: 0
 - role registry: 0
 
-PGMQ has physical queue/meta artifacts for bug dispatch and role work queues, but all observed queue/archive relations are empty. Lantern's bug-operation migration lineage is older than Vera's current v2 replay-safety/project-key/Voss-retirement lineage.
+PGMQ has physical queue/meta artifacts for bug dispatch and role work queues, but all observed queue/archive relations are empty. Lantern's bug-operation migration lineage predates Vera's later replay-safety/project-key/Voss-retirement changes.
 
 Classification: **DORMANT / STALE CONSTRUCTION COPY**, not current shared bug authority and not automatically RETIRE. Reuse or retirement requires explicit ownership/dependency evidence.
+
+### Dependency evidence for dormant construction schemas
+
+Fresh catalog inspection found no cross-schema foreign keys involving `r9a0_*`, `governance`, `bug_ops`, or `lantern_material`.
+
+The R9A0 coordination views/functions reference their own R9A0 schemas, and the bug-operation functions reference their own bug subsystem. `lantern_material.runtime_visible_v1` references only Lantern material tables. This is favorable for future separation/retirement because the database does not currently encode FK-level coupling between these domains.
+
+Current `project-lantern@main` indexed source search returned no reference to `r9a0_api` or `bug_ops`. That strengthens DORMANT/RETIRE-CANDIDATE classification for the empty construction-era surfaces, but it does **not** prove no external/unindexed caller exists. Production deletion still requires caller/currentness proof and separate authority.
 
 ## Other provider surfaces
 
