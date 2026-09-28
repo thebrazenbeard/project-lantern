@@ -10,6 +10,14 @@ The repository contains executable source under `src/lantern` and `src/build_tea
 
 `main` is the canonical repository branch for the source currently visible here. Repository source does not by itself prove deployment, installation, provider activation, or runtime use.
 
+## Lantern currentness
+
+WoWSQL is retired from Lantern currentness. The current BT2 source contains a provider-neutral PostgreSQL / SQL Connectome V4 replacement contract, but source presence is not runtime installation or qualification. Until a replacement PostgreSQL runtime is reconstructed, qualified, connected through the governed V4 interface, and installed as the active Project contract:
+
+`LANTERN_CURRENTNESS = UNKNOWN`
+
+Do not fall back to WoWSQL, Supabase, Git source, project prose, benchmark fixtures, chat history, model memory, or inference as current Lantern runtime state. See `projects/lantern/CURRENTNESS_STATUS_V2.md`.
+
 ## Scope
 
 - preserve Lantern qualification/orchestration source;
