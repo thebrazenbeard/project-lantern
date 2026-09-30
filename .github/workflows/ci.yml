@@ -33,3 +33,12 @@ jobs:
         run: python -m pytest -q
       - name: Compile
         run: python -m compileall -q src tests
+      - name: Build distributions
+        run: python -m build
+      - name: Smoke public package surface
+        run: |
+          python - <<'PY'
+          import lantern
+          assert lantern.__all__ == ["LanternStore", "OperationResult", "RecordEnvelope", "build_record", "parse_record"]
+          PY
+          lantern --help >/dev/null
