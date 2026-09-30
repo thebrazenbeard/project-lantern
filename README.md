@@ -2,9 +2,9 @@
 
 # Project Lantern
 
-Project Lantern is a Python qualification and orchestration workspace that lives alongside the Build Team 2.0 implementation.
+Project Lantern is a durable evidence-custody and provenance package. It provides canonical record construction, source custody, lineage, assessments, decisions, links, and portable import/export mechanics without turning stored evidence into domain authority.
 
-The repository contains executable source under `src/lantern` and `src/build_team`, tests, project snapshots under `projects/`, and a `lantern` command-line entry point declared in `pyproject.toml`.
+The executable package source is under `src/lantern`, with tests under `tests/lantern`, project snapshots under `projects/`, and the `lantern` command-line entry point declared in `pyproject.toml`. The repository does not contain a `src/build_team` package.
 
 ## Current status
 
@@ -20,16 +20,15 @@ Do not fall back to WoWSQL, Supabase, Git source, project prose, benchmark fixtu
 
 ## Scope
 
-- preserve Lantern qualification/orchestration source;
-- keep Build Team support code and Lantern code separable but compatible;
+- preserve Lantern evidence-custody and qualification source;
+- keep its public Python and CLI surfaces narrow and explicit;
 - retain tests and project evidence needed to reproduce qualification work;
 - keep repository state distinct from any live provider or deployed runtime.
 
 ## Development
 
-The package targets Python 3.11+ and exposes two command-line entry points:
+The package targets Python 3.11+ and exposes one command-line entry point:
 
-- `build-team` → `build_team.cli:app`
 - `lantern` → `lantern.cli:main`
 
-Use the tests and repository contracts as the evidence surface for source-level behavior.
+Its stable Python surface is documented in `docs/LANTERN_PUBLIC_API_V1.md`. Use the tests and repository contracts as the evidence surface for source-level behavior.
