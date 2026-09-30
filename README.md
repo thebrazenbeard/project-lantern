@@ -16,7 +16,7 @@ WoWSQL is retired from Lantern currentness. The current BT2 source contains a pr
 
 `LANTERN_CURRENTNESS = UNKNOWN`
 
-Do not fall back to WoWSQL, Supabase, Git source, project prose, benchmark fixtures, chat history, model memory, or inference as current Lantern runtime state. See `projects/lantern/CURRENTNESS_STATUS_V2.md`.
+Do not fall back to WoWSQL, Supabase, Git source, project prose, benchmark fixtures, chat history, model memory, or inference as current Lantern runtime state. The machine-readable current binding status is `projects/lantern/CURRENTNESS_STATUS_V3.json`: active backend is null, replacement backend is `NOT_ESTABLISHED`, and V4 remains source-candidate material only. Historical rationale remains in `projects/lantern/CURRENTNESS_STATUS_V2.md`.
 
 ## Scope
 
