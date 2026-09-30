@@ -45,8 +45,8 @@
       "id": "runtime-qualification",
       "goal": "Preserve exact provider/currentness qualification boundaries.",
       "acceptance": [
-        "WoWSQL target and projection binding are exact.",
-        "B0/payload/B1 stability is enforced.",
+        "WoWSQL is retired and must not be selected as a current provider route.",
+        "A replacement PostgreSQL / SQL Connectome V4 route requires separate qualification, exact target binding, and stable B0/payload/B1 before currentness can be claimed.",
         "Reads never manufacture write authority."
       ]
     }
