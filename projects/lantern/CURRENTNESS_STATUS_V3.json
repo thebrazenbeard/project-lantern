@@ -1,0 +1,27 @@
+{
+  "schema": "PROJECT_LANTERN_CURRENTNESS_STATUS_V3",
+  "observed_source_base": "49df2a6996d4d6ed0db52fed4e7d3757507def74",
+  "observed_at": "2026-09-30",
+  "retired_currentness_provider": {
+    "provider": "WoWSQL",
+    "target": "bt2-479e4ad9",
+    "state": "RETIRED"
+  },
+  "active_currentness_backend": null,
+  "replacement_currentness_backend": "NOT_ESTABLISHED",
+  "lantern_currentness": "UNKNOWN",
+  "source_candidates": [
+    {
+      "name": "POSTGRESQL_SQL_CONNECTOME_V4",
+      "state": "SOURCE_CANDIDATE_ONLY"
+    }
+  ],
+  "fail_closed": {
+    "query_retired_wowsql": false,
+    "infer_candidate_as_active_backend": false,
+    "fallback_to_supabase": false,
+    "fallback_to_git_or_project_prose": false,
+    "fallback_to_memory_or_chat": false
+  },
+  "evidence_ceiling": "SOURCE_STATUS_ONLY_NO_LIVE_RUNTIME_CURRENTNESS"
+}
