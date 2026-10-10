@@ -1,0 +1,19 @@
+{
+  "schema": "BT2_CROSS_REPO_FRONTIER_V1",
+  "repository": "thebrazenbeard/project-lantern",
+  "source_baseline": {
+    "observed_sha": "79b730ed4d1d3d7486902a725ced39854e0ffb47",
+    "source_only": true
+  },
+  "lane": "material-provenance",
+  "objective": "Keep Git-source evidence and the current Project-mandated WoWSQL V3 read route separately qualified.",
+  "acceptance_invariant": "No runtime currentness claim without exact backend preflight, B0/payload/B1 stability and policy digest.",
+  "release_gates": {
+    "source_test": "REQUIRED",
+    "exact_head_review": "REQUIRED",
+    "installed_runtime": "NOT_CLAIMED",
+    "protected_effect_authority": false
+  },
+  "kind": "ADVISORY_SOURCE_ONLY",
+  "observed_at": "2026-10-09"
+}
