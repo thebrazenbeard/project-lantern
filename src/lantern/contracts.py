@@ -83,7 +83,9 @@ def build_record(*, project_id: str, record_type: RecordType, actor_id: str,
                  schema_version: str = SUPPORTED_SCHEMA_VERSION,
                  created_at: str | datetime | None = None, observed_at: str | datetime | None = None,
                  lineage_key: str | None = None, predecessor_record_id: str | None = None) -> RecordEnvelope:
-    assigned_id = record_id or uuid7()
+    if record_id is not None and type(record_id) is not str:
+        raise ValueError("explicit record_id must be a UUID7 string")
+    assigned_id = uuid7() if record_id is None else require_uuid7(record_id)
     body = _record_body(project_id=project_id, record_id=assigned_id, record_type=record_type,
                         schema_version=schema_version, actor_id=actor_id,
                         created_at=created_at or datetime.now(UTC), observed_at=observed_at,

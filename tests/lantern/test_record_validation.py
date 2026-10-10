@@ -113,3 +113,16 @@ def test_direct_insert_rejects_retained_custody_without_blob_and_has_zero_effect
     assert sorted(path.name for path in seeded_store.sources_path.iterdir()) == before_sources
     assert not (seeded_store.root / ".lantern-staging").exists() or not any((seeded_store.root / ".lantern-staging").iterdir())
     assert not (seeded_store.root / ".lantern-operations").exists() or not any((seeded_store.root / ".lantern-operations").iterdir())
+
+
+@pytest.mark.parametrize("provided_id", ["", False, "not-a-uuid7"])
+def test_supplied_invalid_record_id_is_not_silently_replaced(provided_id, seeded_store):
+    with pytest.raises(ValueError):
+        build_record(
+            project_id=seeded_store.project_id,
+            record_id=provided_id,
+            record_type="Claim",
+            actor_id="tester",
+            payload={"claim_text": "bound test"},
+            provenance={"source": "local-test"},
+        )
