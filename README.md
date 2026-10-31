@@ -43,6 +43,10 @@ For applications, import the documented public names from `lantern`; treat the r
 - The package does **not** make a domain claim true, establish external source currentness, enforce host-owned immutable authority, grant permission for an effect, or prove deployment in another system.
 - Historical project integration notes are **not** an active backend binding. The [machine-readable currentness record](projects/lantern/CURRENTNESS_STATUS_V3.json) marks the replacement backend as not established and the active backend as null. The [historical rationale](projects/lantern/CURRENTNESS_STATUS_V2.md) remains available, but source presence must not be promoted into a live runtime claim.
 
+## Lantern currentness
+
+`LANTERN_CURRENTNESS = UNKNOWN` is the repository's fail-closed project-integration status. The [currentness rationale](projects/lantern/CURRENTNESS_STATUS_V2.md) and [machine-readable status](projects/lantern/CURRENTNESS_STATUS_V3.json) are source records, not a verified active backend, live host binding, or authorization grant. In particular, a successful local CLI operation does not establish current project installation or consumption by another runtime.
+
 ## Test and contribution guidance
 
 The [CI workflow](.github/workflows/ci.yml) installs the development extras, runs pytest, compiles source, builds distributions, and smokes the public package surface. To run it locally:
