@@ -32,3 +32,9 @@ The package targets Python 3.11+ and exposes one command-line entry point:
 - `lantern` → `lantern.cli:main`
 
 Its stable Python surface is documented in `docs/LANTERN_PUBLIC_API_V1.md`. Use the tests and repository contracts as the evidence surface for source-level behavior.
+
+## Editor startup containment — tracked source (2026-11-20)
+
+The tracked `main` source formerly contained a concealed VS Code `folderOpen` task invoking obfuscated `.vscode/ini` through Node. The task list is now empty, `task.allowAutomaticTasks` is explicitly `"off"`, and the obfuscated file is removed from this source tree. Historical Git source remains for investigation.
+
+**Limits:** This is source-only containment, not proof that older checkouts, editor extensions, user/global settings, local credentials, or any previous host execution are safe. Do not execute historical suspect assets.
